@@ -105,27 +105,79 @@ activity_logs
 **Priority:** 🔥 Critical - MVP Core
 
 #### Backend Tasks:
-- [ ] Database migration untuk products, categories, units, suppliers
-- [ ] Model & relationships untuk Product management
+- [ ] **Database migration untuk products, categories, units, suppliers**
+  - [ ] Create migration: `create_categories_table`
+  - [ ] Create migration: `create_units_table` 
+  - [ ] Create migration: `create_suppliers_table`
+  - [ ] Create migration: `create_products_table`
+  - [ ] Create migration: `create_product_units_table`
+  - [ ] Create migration: `create_product_images_table`
+  - [ ] Create migration: `create_product_batches_table` (FIFO foundation)
+  - [ ] Create migration: `create_stock_movements_table` (FIFO foundation)
+- [ ] **Model & relationships untuk Product management**
+  - [ ] Create Category model dengan self-referencing relationship
+  - [ ] Create Unit model dengan base unit conversion
+  - [ ] Create Supplier model dengan basic validation
+  - [ ] Create Product model dengan category relationship
+  - [ ] Create ProductUnit model (pivot dengan additional fields)
+  - [ ] Create ProductImage model untuk multiple images
+  - [ ] Create ProductBatch model untuk FIFO tracking
+  - [ ] Create StockMovement model untuk audit trail
 - [ ] **NEW:** Supplier model & management (moved from Sprint 6)
-- [ ] API CRUD untuk categories, units, products, suppliers
-- [ ] Barcode generation & validation
-- [ ] Image upload handling untuk products (with security validation)
-- [ ] Seeder untuk sample data
+- [ ] **API CRUD untuk categories, units, products, suppliers**
+  - [ ] CategoryController dengan nested category support
+  - [ ] UnitController dengan conversion logic
+  - [ ] SupplierController dengan validation
+  - [ ] ProductController dengan search & filtering
+  - [ ] API Resources untuk consistent responses
+  - [ ] Form Requests untuk validation rules
+- [ ] **Barcode generation & validation**
+- [ ] **Image upload handling untuk products (with security validation)**
+- [ ] **Seeder untuk sample data**
+  - [ ] CategorySeeder dengan hierarchical data
+  - [ ] UnitSeeder dengan common units (pcs, pack, kg, etc.)
+  - [ ] SupplierSeeder dengan sample suppliers
+  - [ ] ProductSeeder dengan various products
 - [ ] **NEW:** Product search & filtering optimization
 - [ ] **NEW:** Bulk import/export functionality
 - [ ] **NEW:** Basic stock movement tracking foundation
 
 #### Frontend Tasks:
-- [ ] Product management pages (list, create, edit)
-- [ ] Category & Unit management
+- [ ] **Product management pages (list, create, edit)**
+  - [ ] ProductList.vue dengan QTable dan search
+  - [ ] ProductCreate.vue dengan form validation
+  - [ ] ProductEdit.vue dengan image upload
+  - [ ] ProductDetail.vue dengan batch information
+- [ ] **Category & Unit management**
+  - [ ] CategoryList.vue dengan tree structure
+  - [ ] CategoryForm.vue untuk create/edit
+  - [ ] UnitList.vue dengan conversion display
+  - [ ] UnitForm.vue dengan base unit selection
 - [ ] **NEW:** Basic Supplier management interface
-- [ ] Image upload component with preview
-- [ ] Barcode scanner integration (based on spike results)
-- [ ] Search & filter functionality with debouncing
-- [ ] Data tables dengan Quasar QTable
+  - [ ] SupplierList.vue dengan contact information
+  - [ ] SupplierForm.vue dengan address fields
+  - [ ] SupplierDetail.vue dengan performance metrics
+- [ ] **Image upload component with preview**
+  - [ ] ImageUpload.vue dengan drag & drop
+  - [ ] Image compression & validation
+  - [ ] Multiple image gallery
+- [ ] **Barcode scanner integration (based on spike results)**
+- [ ] **Search & filter functionality with debouncing**
+  - [ ] Global search component
+  - [ ] Advanced filter sidebar
+  - [ ] Category filter tree
+- [ ] **Data tables dengan Quasar QTable**
+  - [ ] Pagination & sorting
+  - [ ] Column customization
+  - [ ] Export functionality
 - [ ] **NEW:** Bulk operations interface
+  - [ ] Bulk edit component
+  - [ ] Mass delete confirmation
+  - [ ] Status toggle actions
 - [ ] **NEW:** Product import wizard
+  - [ ] CSV/Excel import interface
+  - [ ] Data validation & preview
+  - [ ] Error handling & rollback
 
 #### Database Schema:
 ```sql
@@ -178,23 +230,73 @@ product_batches
 
 #### Backend Tasks:
 - [ ] **Purchase models & migrations (purchases, purchase_items)**
+  - [ ] Create migration: `create_purchases_table`
+  - [ ] Create migration: `create_purchase_items_table`
+  - [ ] Create migration: `enhance_product_batches_table`
+  - [ ] Create migration: `create_fifo_transactions_table`
+  - [ ] Create migration: `enhance_stock_movements_table`
+  - [ ] Add indexes: FIFO optimization indexes
+  - [ ] Add triggers: Batch quantity update triggers
+- [ ] **Models untuk Purchase Management**
+  - [ ] Create Purchase model dengan supplier relationship
+  - [ ] Create PurchaseItem model dengan product relationship
+  - [ ] Enhance ProductBatch model dengan FIFO methods
+  - [ ] Create FifoTransaction model untuk cost tracking
+  - [ ] Enhance StockMovement model dengan batch tracking
 - [ ] **FIFO algorithm implementation**
+  - [ ] FifoService class untuk cost calculation
+  - [ ] BatchSelector untuk oldest-first logic
+  - [ ] CostCalculator untuk weighted average
+  - [ ] StockUpdater untuk quantity management
 - [ ] **Batch tracking system**
 - [ ] **Stock incoming logic with FIFO**
 - [ ] **Expiry date management**
+  - [ ] ExpiryAlert service
+  - [ ] Automated expiry checking
+  - [ ] FEFO (First Expired First Out) option
 - [ ] **Cost calculation dengan FIFO method**
 - [ ] **Supplier return handling**
 - [ ] **Purchase order workflow & approval**
+  - [ ] Approval middleware
+  - [ ] Status transition logic
+  - [ ] Email notifications
 - [ ] **Purchase API endpoints**
+  - [ ] PurchaseController dengan approval workflow
+  - [ ] PurchaseItemController untuk line items
+  - [ ] BatchController untuk FIFO management
+  - [ ] API Resources untuk purchase data
 
 #### Frontend Tasks:
 - [ ] **Purchase order interface**
+  - [ ] PurchaseOrderList.vue dengan status tracking
+  - [ ] PurchaseOrderCreate.vue dengan supplier selection
+  - [ ] PurchaseOrderEdit.vue dengan item management
+  - [ ] PurchaseOrderDetail.vue dengan approval workflow
 - [ ] **Goods receipt interface dengan batch tracking**
+  - [ ] GoodsReceiptList.vue untuk pending receipts
+  - [ ] GoodsReceiptForm.vue dengan batch creation
+  - [ ] BatchInformation.vue untuk expiry dates
+  - [ ] QuantityAdjustment.vue untuk received vs ordered
 - [ ] **Purchase reports dengan cost analysis**
+  - [ ] PurchaseReport.vue dengan date filters
+  - [ ] SupplierPerformance.vue dengan metrics
+  - [ ] CostAnalysis.vue dengan FIFO breakdown
 - [ ] **Purchase approval workflow interface**
+  - [ ] ApprovalQueue.vue untuk pending approvals
+  - [ ] ApprovalDetail.vue dengan decision buttons
+  - [ ] NotificationCenter.vue untuk alerts
 - [ ] **FIFO stock visualization**
+  - [ ] StockBatches.vue dengan aging display
+  - [ ] FifoVisualization.vue dengan cost layers
+  - [ ] BatchTimeline.vue untuk movement history
 - [ ] **Expiry date alerts & management**
+  - [ ] ExpiryDashboard.vue dengan alerts
+  - [ ] ExpiringProducts.vue dengan action buttons
+  - [ ] ExpiryCalendar.vue untuk planning
 - [ ] **Supplier performance tracking**
+  - [ ] SupplierMetrics.vue dengan KPIs
+  - [ ] DeliveryTracking.vue dengan timeline
+  - [ ] QualityMetrics.vue dengan ratings
 
 #### Database Schema:
 ```sql
@@ -234,13 +336,37 @@ stock_movements (enhanced)
 **Priority:** 🔥 Critical - MVP Core Feature
 
 #### Backend Tasks:
-- [ ] Transaction models & migrations (simplified for MVP)
-- [ ] Basic POS API endpoints
+- [ ] **Transaction models & migrations (simplified for MVP)**
+  - [ ] Create migration: `create_customers_table`
+  - [ ] Create migration: `create_transactions_table` (dengan FIFO cost fields)
+  - [ ] Create migration: `create_transaction_items_table` (dengan cost tracking)
+  - [ ] Create migration: `create_transaction_costs_table` (FIFO breakdown)
+  - [ ] Create migration: `create_payments_table`
+  - [ ] Add indexes: Transaction performance optimization
+- [ ] **Transaction Models dengan FIFO Support**
+  - [ ] Create Customer model dengan member features
+  - [ ] Create Transaction model dengan cost calculation
+  - [ ] Create TransactionItem model dengan FIFO cost
+  - [ ] Create TransactionCost model untuk FIFO breakdown
+  - [ ] Create Payment model untuk multiple methods
+- [ ] **Basic POS API endpoints**
+  - [ ] TransactionController dengan FIFO logic
+  - [ ] CustomerController untuk member lookup
+  - [ ] PaymentController untuk split payments
 - [ ] **FIFO-based stock deduction logic**
+  - [ ] StockDeduction service dengan batch selection
+  - [ ] QuantityValidator untuk stock checking
+  - [ ] ReservationManager untuk pending transactions
 - [ ] **Cost of Goods Sold (COGS) calculation dengan FIFO**
-- [ ] Receipt generation API
-- [ ] Cash payment processing logic
+  - [ ] FifoCostCalculator service
+  - [ ] ProfitCalculator untuk real-time margins
+  - [ ] CostBreakdown untuk detailed analysis
+- [ ] **Receipt generation API**
+- [ ] **Cash payment processing logic**
 - [ ] **NEW:** Transaction validation rules
+  - [ ] StockValidation rules
+  - [ ] PriceValidation rules
+  - [ ] CustomerValidation rules
 - [ ] **NEW:** FIFO inventory checks**
 - [ ] **NEW:** Real-time stock updates dengan batch tracking**
 
@@ -584,6 +710,683 @@ payment_methods
 - 🔴 **Before Spikes:** High Risk (Timeline, Technical Complexity)
 - 🟡 **After Spikes:** Medium Risk (Mitigated)
 - 🟢 **MVP Delivery:** Low Risk (Simplified Scope)
+
+---
+
+## 🛠️ **Detailed Migration Strategy & Database Implementation**
+
+### **📋 Migration Schedule by Sprint**
+
+#### **Sprint 1: Authentication & Foundation (✅ COMPLETE)**
+```bash
+# Already implemented migrations:
+- 2025_08_03_072417_create_personal_access_tokens_table.php
+- 2025_08_03_072526_add_additional_fields_to_users_table.php
+- 2025_08_03_080530_create_user_profiles_table.php
+- 2025_08_03_080551_create_activity_logs_table.php
+- 2025_08_03_072423_create_permission_tables.php (Spatie)
+```
+
+#### **Sprint 2: Master Data + Supplier + FIFO Foundation**
+```bash
+# New migrations to create:
+php artisan make:migration create_categories_table
+php artisan make:migration create_units_table
+php artisan make:migration create_suppliers_table
+php artisan make:migration create_products_table
+php artisan make:migration create_product_units_table
+php artisan make:migration create_product_images_table
+php artisan make:migration create_product_batches_table
+php artisan make:migration create_stock_movements_table
+
+# Migration dependencies order:
+1. categories (self-referencing, no dependencies)
+2. units (self-referencing, no dependencies) 
+3. suppliers (no dependencies)
+4. products (depends on: categories)
+5. product_units (depends on: products, units)
+6. product_images (depends on: products)
+7. product_batches (depends on: products, suppliers)
+8. stock_movements (depends on: products, product_batches)
+```
+
+#### **Sprint 3: Purchase Management & FIFO Implementation**
+```bash
+# Purchase management migrations:
+php artisan make:migration create_purchases_table
+php artisan make:migration create_purchase_items_table
+
+# FIFO enhancement migrations:
+php artisan make:migration enhance_product_batches_table
+php artisan make:migration create_fifo_transactions_table
+php artisan make:migration enhance_stock_movements_table
+
+# Performance optimization migrations:
+php artisan make:migration add_fifo_indexes_to_product_batches
+php artisan make:migration add_performance_indexes_to_stock_movements
+
+# Migration dependencies order:
+1. purchases (depends on: suppliers, users)
+2. purchase_items (depends on: purchases, products, units)
+3. enhance_product_batches (adds purchase_id, status fields)
+4. fifo_transactions (depends on: products, product_batches)
+5. enhance_stock_movements (adds batch_id, location_id fields)
+6. Performance indexes (final optimization)
+```
+
+#### **Sprint 4: Sales & POS dengan FIFO Costing**
+```bash
+# Sales management migrations:
+php artisan make:migration create_customers_table
+php artisan make:migration create_transactions_table
+php artisan make:migration create_transaction_items_table
+php artisan make:migration create_transaction_costs_table
+php artisan make:migration create_payments_table
+
+# Migration dependencies order:
+1. customers (no dependencies)
+2. transactions (depends on: customers, users)
+3. transaction_items (depends on: transactions, products, units)
+4. transaction_costs (depends on: transaction_items, product_batches)
+5. payments (depends on: transactions)
+```
+
+#### **Sprint 5: Store & Location Management**
+```bash
+# Multi-store migrations:
+php artisan make:migration create_stores_table
+php artisan make:migration create_locations_table
+php artisan make:migration create_location_stocks_table
+php artisan make:migration create_user_stores_table
+
+# Enhance existing tables for multi-location:
+php artisan make:migration add_location_id_to_transactions_table
+php artisan make:migration add_location_id_to_stock_movements_table
+
+# Migration dependencies order:
+1. stores (no dependencies)
+2. locations (depends on: stores)
+3. location_stocks (depends on: locations, products, product_batches)
+4. user_stores (depends on: users, stores)
+5. Enhance existing tables for location support
+```
+
+### **🔧 Migration Implementation Details**
+
+#### **Key Migration Features:**
+
+##### **1. Foreign Key Constraints Strategy:**
+```php
+// Safe constraint creation with proper ordering
+Schema::table('products', function (Blueprint $table) {
+    $table->foreign('category_id')
+          ->references('id')->on('categories')
+          ->onDelete('set null')  // Safe deletion
+          ->onUpdate('cascade');
+});
+
+// Critical constraints that prevent deletion
+Schema::table('product_batches', function (Blueprint $table) {
+    $table->foreign('product_id')
+          ->references('id')->on('products')
+          ->onDelete('restrict');  // Cannot delete product with batches
+});
+```
+
+##### **2. Index Strategy for FIFO Performance:**
+```php
+// FIFO selection optimization
+Schema::table('product_batches', function (Blueprint $table) {
+    $table->index(['product_id', 'status', 'received_date', 'id'], 'idx_fifo_selection');
+    $table->index(['product_id', 'current_quantity'], 'idx_stock_lookup');
+    $table->index(['expiry_date', 'status'], 'idx_expiry_tracking');
+});
+
+// Stock movement tracking
+Schema::table('stock_movements', function (Blueprint $table) {
+    $table->index(['product_id', 'created_at'], 'idx_movement_timeline');
+    $table->index(['reference_type', 'reference_id'], 'idx_reference_lookup');
+    $table->index(['batch_id', 'movement_type'], 'idx_batch_movements');
+});
+```
+
+##### **3. Rollback Strategy:**
+```php
+// Each migration must have proper rollback
+public function down()
+{
+    // Drop foreign keys first
+    Schema::table('product_batches', function (Blueprint $table) {
+        $table->dropForeign(['product_id']);
+        $table->dropForeign(['supplier_id']);
+    });
+    
+    // Then drop indexes
+    Schema::table('product_batches', function (Blueprint $table) {
+        $table->dropIndex('idx_fifo_selection');
+        $table->dropIndex('idx_stock_lookup');
+    });
+    
+    // Finally drop table
+    Schema::dropIfExists('product_batches');
+}
+```
+
+### **📊 Seeder Implementation Strategy**
+
+#### **Seeder Dependencies Order:**
+```bash
+# Sprint 2 Seeders:
+1. CategorySeeder (sample categories hierarchy)
+2. UnitSeeder (common units: pcs, pack, kg, liter, etc.)
+3. SupplierSeeder (sample suppliers with contact info)
+4. ProductSeeder (sample products dengan realistic data)
+5. ProductUnitSeeder (multiple units per product)
+
+# Sprint 3 Seeders:
+6. PurchaseSeeder (sample purchase orders)
+7. ProductBatchSeeder (sample batches dengan FIFO data)
+
+# Sprint 4 Seeders:
+8. CustomerSeeder (sample customers dengan members)
+9. TransactionSeeder (sample sales dengan FIFO costs)
+
+# Sprint 5 Seeders:
+10. StoreSeeder (sample stores)
+11. LocationSeeder (sample warehouses per store)
+```
+
+#### **Sample Seeder Implementation:**
+```php
+class ProductBatchSeeder extends Seeder
+{
+    public function run()
+    {
+        $products = Product::all();
+        
+        foreach ($products as $product) {
+            // Create multiple batches dengan different dates untuk FIFO testing
+            for ($i = 0; $i < 3; $i++) {
+                ProductBatch::create([
+                    'product_id' => $product->id,
+                    'supplier_id' => Supplier::inRandomOrder()->first()->id,
+                    'batch_number' => 'BATCH-' . $product->sku . '-' . ($i + 1),
+                    'initial_quantity' => rand(50, 200),
+                    'current_quantity' => rand(10, 150),
+                    'unit_cost' => $product->productUnits()->first()->cost_price * (1 + ($i * 0.1)),
+                    'received_date' => now()->subDays(rand(1, 90)),
+                    'expiry_date' => $product->shelf_life_days ? 
+                        now()->addDays($product->shelf_life_days - rand(0, 30)) : null,
+                    'status' => 'active'
+                ]);
+            }
+        }
+    }
+}
+```
+
+---
+
+### **📁 Project Structure & Code Organization**
+
+#### **Laravel Backend Structure:**
+```
+app/
+├── Http/
+│   ├── Controllers/
+│   │   ├── Auth/                    # Sprint 1 ✅
+│   │   ├── Master/                  # Sprint 2 🎯
+│   │   │   ├── CategoryController.php
+│   │   │   ├── UnitController.php
+│   │   │   ├── SupplierController.php
+│   │   │   └── ProductController.php
+│   │   ├── Purchase/                # Sprint 3
+│   │   │   ├── PurchaseController.php
+│   │   │   └── PurchaseItemController.php
+│   │   ├── Sales/                   # Sprint 4
+│   │   │   ├── TransactionController.php
+│   │   │   ├── CustomerController.php
+│   │   │   └── POSController.php
+│   │   └── Store/                   # Sprint 5
+│   │       ├── StoreController.php
+│   │       └── LocationController.php
+│   ├── Requests/
+│   │   ├── Master/
+│   │   │   ├── StoreCategoryRequest.php
+│   │   │   ├── StoreSupplierRequest.php
+│   │   │   └── StoreProductRequest.php
+│   │   ├── Purchase/
+│   │   │   └── StorePurchaseRequest.php
+│   │   └── Sales/
+│   │       └── StoreTransactionRequest.php
+│   └── Resources/
+│       ├── CategoryResource.php
+│       ├── ProductResource.php
+│       ├── PurchaseResource.php
+│       └── TransactionResource.php
+├── Models/
+│   ├── Master/
+│   │   ├── Category.php
+│   │   ├── Unit.php
+│   │   ├── Supplier.php
+│   │   ├── Product.php
+│   │   ├── ProductUnit.php
+│   │   ├── ProductImage.php
+│   │   └── ProductBatch.php
+│   ├── Purchase/
+│   │   ├── Purchase.php
+│   │   └── PurchaseItem.php
+│   ├── Sales/
+│   │   ├── Customer.php
+│   │   ├── Transaction.php
+│   │   ├── TransactionItem.php
+│   │   ├── TransactionCost.php
+│   │   └── Payment.php
+│   ├── Store/
+│   │   ├── Store.php
+│   │   ├── Location.php
+│   │   ├── LocationStock.php
+│   │   └── UserStore.php
+│   └── Base/
+│       ├── StockMovement.php
+│       ├── FifoTransaction.php
+│       └── ActivityLog.php
+├── Services/
+│   ├── FIFO/
+│   │   ├── FifoService.php           # Core FIFO logic
+│   │   ├── BatchSelector.php         # Batch selection algorithm
+│   │   ├── CostCalculator.php        # Cost calculation engine
+│   │   └── StockMovementService.php  # Stock tracking
+│   ├── Purchase/
+│   │   ├── PurchaseService.php
+│   │   └── StockReceiptService.php
+│   ├── Sales/
+│   │   ├── TransactionService.php
+│   │   └── POSService.php
+│   └── Report/
+│       ├── InventoryReportService.php
+│       └── CostAnalysisService.php
+├── Observers/
+│   ├── ProductBatchObserver.php     # Auto stock movement tracking
+│   ├── TransactionObserver.php      # Auto FIFO cost calculation
+│   └── PurchaseObserver.php         # Auto batch creation
+└── Jobs/
+    ├── ProcessFifoCalculation.php   # Background FIFO processing
+    ├── UpdateStockLevels.php        # Stock level updates
+    └── GenerateInventoryReport.php  # Report generation
+```
+
+#### **Vue.js Frontend Structure:**
+```
+resources/js/
+├── components/
+│   ├── Master/                      # Sprint 2 🎯
+│   │   ├── CategoryList.vue
+│   │   ├── CategoryForm.vue
+│   │   ├── UnitList.vue
+│   │   ├── UnitForm.vue
+│   │   ├── SupplierList.vue
+│   │   ├── SupplierForm.vue
+│   │   ├── ProductList.vue
+│   │   ├── ProductForm.vue
+│   │   ├── ProductBatchList.vue
+│   │   └── StockMovementHistory.vue
+│   ├── Purchase/                    # Sprint 3
+│   │   ├── PurchaseList.vue
+│   │   ├── PurchaseForm.vue
+│   │   ├── PurchaseItemForm.vue
+│   │   └── BatchReceiptForm.vue
+│   ├── Sales/                       # Sprint 4
+│   │   ├── POSInterface.vue
+│   │   ├── TransactionList.vue
+│   │   ├── TransactionForm.vue
+│   │   ├── CustomerList.vue
+│   │   ├── CustomerForm.vue
+│   │   └── PaymentForm.vue
+│   ├── Reports/                     # Sprint 5-6
+│   │   ├── InventoryReport.vue
+│   │   ├── CostAnalysis.vue
+│   │   ├── SalesReport.vue
+│   │   └── PurchaseReport.vue
+│   └── Common/
+│       ├── DataTable.vue
+│       ├── Modal.vue
+│       ├── SearchFilter.vue
+│       └── PaginationComponent.vue
+├── stores/                          # Pinia State Management
+│   ├── authStore.js                 # Sprint 1 ✅
+│   ├── categoryStore.js             # Sprint 2 🎯
+│   ├── supplierStore.js             # Sprint 2 🎯
+│   ├── productStore.js              # Sprint 2 🎯
+│   ├── purchaseStore.js             # Sprint 3
+│   ├── transactionStore.js          # Sprint 4
+│   └── reportStore.js               # Sprint 5-6
+├── composables/
+│   ├── useFifo.js                   # FIFO calculation composable
+│   ├── useStockMovement.js          # Stock tracking composable
+│   ├── usePagination.js             # Table pagination
+│   └── useValidation.js             # Form validation
+└── router/
+    ├── index.js                     # Main router
+    ├── auth.js                      # Auth routes ✅
+    ├── master.js                    # Master data routes 🎯
+    ├── purchase.js                  # Purchase routes
+    ├── sales.js                     # Sales routes
+    └── reports.js                   # Report routes
+```
+
+#### **Database Organization:**
+```
+database/
+├── migrations/
+│   ├── 2025_sprint1/                # Authentication ✅
+│   ├── 2025_sprint2/                # Master + Supplier + FIFO Foundation 🎯
+│   ├── 2025_sprint3/                # Purchase + FIFO Implementation
+│   ├── 2025_sprint4/                # Sales + POS dengan FIFO
+│   └── 2025_sprint5/                # Multi-store & Location
+├── seeders/
+│   ├── Sprint1Seeder.php            # Users & permissions ✅
+│   ├── Sprint2Seeder.php            # Master data + suppliers 🎯
+│   ├── Sprint3Seeder.php            # Purchase data + batches
+│   ├── Sprint4Seeder.php            # Sales data + customers
+│   └── Sprint5Seeder.php            # Store & location data
+└── factories/
+    ├── CategoryFactory.php
+    ├── SupplierFactory.php
+    ├── ProductFactory.php
+    ├── ProductBatchFactory.php
+    ├── PurchaseFactory.php
+    └── TransactionFactory.php
+```
+
+### **🧪 Testing Strategy by Sprint**
+
+#### **Sprint 2: Master Data + Supplier + FIFO Foundation Testing**
+```bash
+# Unit Tests:
+tests/Unit/Models/
+├── CategoryTest.php                 # Category model relationships
+├── SupplierTest.php                 # Supplier model validation
+├── ProductTest.php                  # Product model dengan units
+├── ProductBatchTest.php             # Batch model dengan FIFO logic
+└── StockMovementTest.php            # Stock tracking logic
+
+# Feature Tests:
+tests/Feature/Master/
+├── CategoryCRUDTest.php             # Category CRUD operations
+├── SupplierCRUDTest.php             # Supplier CRUD operations
+├── ProductCRUDTest.php              # Product CRUD operations
+└── ProductBatchTest.php             # Batch tracking operations
+
+# FIFO Algorithm Tests:
+tests/Unit/Services/FIFO/
+├── FifoServiceTest.php              # Core FIFO calculations
+├── BatchSelectorTest.php            # Batch selection logic
+└── CostCalculatorTest.php           # Cost calculation accuracy
+```
+
+#### **Sprint 3: Purchase + FIFO Implementation Testing**
+```bash
+# Purchase Tests:
+tests/Feature/Purchase/
+├── PurchaseOrderTest.php            # Purchase order creation
+├── PurchaseReceiptTest.php          # Stock receipt processing
+└── BatchCreationTest.php            # Auto batch creation
+
+# FIFO Integration Tests:
+tests/Integration/FIFO/
+├── PurchaseFifoTest.php             # Purchase → batch creation
+├── SaleFifoTest.php                 # Sale → FIFO cost calculation
+└── StockMovementTest.php            # Complete stock tracking
+```
+
+#### **Sprint 4: Sales + POS Testing**
+```bash
+# Sales Tests:
+tests/Feature/Sales/
+├── TransactionTest.php              # Sales transaction processing
+├── POSInterfaceTest.php             # POS system operations
+└── FifoCostingTest.php              # Real-time FIFO costing
+
+# Performance Tests:
+tests/Performance/
+├── FifoPerformanceTest.php          # FIFO calculation speed
+├── POSPerformanceTest.php           # POS response time
+└── DatabasePerformanceTest.php      # Query optimization
+```
+
+---
+
+### **📋 Implementation Guidelines & Best Practices**
+
+#### **🔧 Sprint 2 Implementation Guidelines (Enhanced Master Data)**
+
+##### **Backend Implementation Priority:**
+```php
+// 1. Migration Implementation Order (CRITICAL):
+php artisan make:migration create_categories_table           # First - no dependencies
+php artisan make:migration create_units_table               # Second - no dependencies  
+php artisan make:migration create_suppliers_table           # Third - no dependencies
+php artisan make:migration create_products_table            # Fourth - depends on categories
+php artisan make:migration create_product_units_table       # Fifth - depends on products, units
+php artisan make:migration create_product_images_table      # Sixth - depends on products
+php artisan make:migration create_product_batches_table     # Seventh - FIFO foundation
+php artisan make:migration create_stock_movements_table     # Eighth - stock tracking
+
+// 2. Model Implementation dengan Relationships:
+// Category.php - Self-referencing hierarchy
+class Category extends Model {
+    public function parent() { return $this->belongsTo(Category::class, 'parent_id'); }
+    public function children() { return $this->hasMany(Category::class, 'parent_id'); }
+    public function products() { return $this->hasMany(Product::class); }
+}
+
+// Product.php - Central product model dengan FIFO support
+class Product extends Model {
+    public function batches() { return $this->hasMany(ProductBatch::class); }
+    public function currentStock() { 
+        return $this->batches()->where('status', 'active')->sum('current_quantity'); 
+    }
+    public function averageCost() { 
+        return $this->batches()->where('current_quantity', '>', 0)->avg('unit_cost'); 
+    }
+}
+
+// ProductBatch.php - FIFO batch tracking
+class ProductBatch extends Model {
+    protected $casts = ['received_date' => 'datetime', 'expiry_date' => 'datetime'];
+    
+    public function scopeAvailableForSale($query) {
+        return $query->where('status', 'active')
+                    ->where('current_quantity', '>', 0)
+                    ->orderBy('received_date', 'asc');  // FIFO ordering
+    }
+}
+```
+
+##### **Frontend Implementation Priority:**
+```vue
+<!-- 1. ProductList.vue - Main product management interface -->
+<template>
+  <div class="product-management">
+    <!-- Search & Filter Section -->
+    <SearchFilter 
+      :filters="['category', 'supplier', 'status']"
+      @filter="handleFilter" 
+    />
+    
+    <!-- Product Grid dengan Stock Info -->
+    <div class="product-grid">
+      <ProductCard 
+        v-for="product in products" 
+        :key="product.id"
+        :product="product"
+        :show-fifo-info="true"
+        @edit="editProduct"
+        @view-batches="viewBatches"
+      />
+    </div>
+    
+    <!-- Batch Information Modal -->
+    <ProductBatchModal 
+      v-if="showBatchModal"
+      :product="selectedProduct"
+      @close="showBatchModal = false"
+    />
+  </div>
+</template>
+
+// 2. Pinia Store untuk Product Management
+// stores/productStore.js
+export const useProductStore = defineStore('product', {
+  state: () => ({
+    products: [],
+    categories: [],
+    suppliers: [],
+    units: [],
+    currentProduct: null,
+    loading: false
+  }),
+  
+  actions: {
+    async fetchProducts(filters = {}) {
+      this.loading = true;
+      try {
+        const { data } = await api.get('/api/products', { params: filters });
+        this.products = data.data;
+      } finally {
+        this.loading = false;
+      }
+    },
+    
+    async createProduct(productData) {
+      const { data } = await api.post('/api/products', productData);
+      this.products.unshift(data.data);
+      return data;
+    }
+  }
+});
+```
+
+#### **🎯 Critical Success Factors for FIFO Implementation**
+
+##### **1. Database Performance Optimization:**
+```sql
+-- Critical indexes untuk FIFO performance
+CREATE INDEX idx_fifo_selection ON product_batches (
+    product_id, status, received_date, id
+) WHERE status = 'active' AND current_quantity > 0;
+
+-- Stock movement tracking optimization
+CREATE INDEX idx_stock_timeline ON stock_movements (
+    product_id, created_at DESC
+);
+
+-- Cost calculation optimization
+CREATE INDEX idx_cost_calculation ON transaction_costs (
+    transaction_item_id, product_batch_id
+);
+```
+
+##### **2. FIFO Algorithm Implementation:**
+```php
+// services/FIFO/FifoService.php
+class FifoService {
+    public function calculateSaleCost($productId, $requestedQuantity, $unitId) {
+        $batches = ProductBatch::where('product_id', $productId)
+            ->where('status', 'active')
+            ->where('current_quantity', '>', 0)
+            ->orderBy('received_date', 'asc')
+            ->orderBy('id', 'asc')  // Consistent ordering
+            ->get();
+            
+        $totalCost = 0;
+        $remainingQuantity = $requestedQuantity;
+        $usedBatches = [];
+        
+        foreach ($batches as $batch) {
+            if ($remainingQuantity <= 0) break;
+            
+            $quantityFromBatch = min($remainingQuantity, $batch->current_quantity);
+            $costFromBatch = $quantityFromBatch * $batch->unit_cost;
+            
+            $totalCost += $costFromBatch;
+            $remainingQuantity -= $quantityFromBatch;
+            
+            $usedBatches[] = [
+                'batch_id' => $batch->id,
+                'quantity_used' => $quantityFromBatch,
+                'unit_cost' => $batch->unit_cost,
+                'total_cost' => $costFromBatch
+            ];
+        }
+        
+        if ($remainingQuantity > 0) {
+            throw new InsufficientStockException(
+                "Insufficient stock. Requested: {$requestedQuantity}, Available: " . 
+                ($requestedQuantity - $remainingQuantity)
+            );
+        }
+        
+        return [
+            'total_cost' => $totalCost,
+            'average_cost' => $totalCost / $requestedQuantity,
+            'batches_used' => $usedBatches
+        ];
+    }
+}
+```
+
+##### **3. Real-time Stock Updates:**
+```php
+// observers/ProductBatchObserver.php
+class ProductBatchObserver {
+    public function updated(ProductBatch $batch) {
+        // Auto-create stock movement record
+        if ($batch->isDirty('current_quantity')) {
+            $quantityChange = $batch->current_quantity - $batch->getOriginal('current_quantity');
+            
+            StockMovement::create([
+                'product_id' => $batch->product_id,
+                'batch_id' => $batch->id,
+                'movement_type' => $quantityChange > 0 ? 'in' : 'out',
+                'quantity' => abs($quantityChange),
+                'reference_type' => 'batch_adjustment',
+                'reference_id' => $batch->id,
+                'notes' => 'Auto-generated dari batch update'
+            ]);
+        }
+    }
+}
+```
+
+#### **🧪 Quality Assurance Checklist**
+
+##### **Before Sprint 2 Completion:**
+- [ ] ✅ All migrations run successfully dengan proper foreign keys
+- [ ] ✅ Seeder creates realistic sample data untuk testing
+- [ ] ✅ Product CRUD operations work dengan kategori hierarchy
+- [ ] ✅ Supplier management complete dengan contact information
+- [ ] ✅ Product batch tracking ready untuk FIFO implementation
+- [ ] ✅ Stock movement logging operational
+- [ ] ✅ Basic search & filter functionality working
+- [ ] ✅ Vue.js components responsive dan user-friendly
+- [ ] ✅ API endpoints documented dengan proper response format
+- [ ] ✅ Error handling implemented untuk edge cases
+
+##### **Performance Benchmarks:**
+- [ ] ✅ Product listing loads < 500ms dengan 1000+ products
+- [ ] ✅ Batch creation time < 200ms per batch
+- [ ] ✅ Stock movement tracking < 100ms per movement
+- [ ] ✅ Search functionality returns results < 300ms
+- [ ] ✅ Category tree rendering < 200ms untuk 100+ categories
+
+##### **Security Validations:**
+- [ ] ✅ Input validation pada semua form fields
+- [ ] ✅ SQL injection protection dengan Eloquent ORM
+- [ ] ✅ Authorization checks untuk product management
+- [ ] ✅ File upload validation untuk product images
+- [ ] ✅ Rate limiting pada API endpoints
 
 ---
 
