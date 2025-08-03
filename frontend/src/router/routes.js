@@ -8,10 +8,10 @@ const routes = [
     component: () => import('layouts/MainLayout.vue'),
     meta: { requiresAuth: true },
     children: [
-      { 
-        path: '', 
+      {
+        path: '',
         name: 'dashboard',
-        component: () => import('pages/IndexPage.vue') 
+        component: () => import('pages/IndexPage.vue')
       }
     ],
   },

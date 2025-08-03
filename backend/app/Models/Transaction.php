@@ -69,7 +69,7 @@ class Transaction extends Model
         $prefix = 'TRX';
         $date = now()->format('Ymd');
         $sequence = static::whereDate('created_at', today())->count() + 1;
-        
+
         return $prefix . $date . str_pad($sequence, 4, '0', STR_PAD_LEFT);
     }
 

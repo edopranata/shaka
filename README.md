@@ -2,14 +2,14 @@
 
 ## 📋 Project Overview
 
-Shaka POS adalah aplikasi Point of Sales (POS) modern yang dibangun dengan Laravel 10+ sebagai backend API dan Vue 3 + Quasar Framework sebagai frontend. Aplikasi ini dirancang untuk mendukung operasional toko retail dengan fitur lengkap mulai dari manajemen produk, transaksi penjualan, hingga pelaporan bisnis.
+Shaka POS adalah aplikasi Point of Sales (POS) modern yang dibangun dengan Laravel 12+ sebagai backend API dan Vue 3 + Quasar Framework sebagai frontend. Aplikasi ini dirancang untuk mendukung operasional toko retail dengan fitur lengkap mulai dari manajemen produk, transaksi penjualan, hingga pelaporan bisnis.
 
 **Repository:** https://github.com/edopranata/shaka
 
 ## 🛠️ Technology Stack
 
 ### Backend
-- **Framework:** Laravel 10+
+- **Framework:** Laravel 12+
 - **Authentication:** Laravel Sanctum
 - **Authorization:** Spatie Laravel Permission
 - **Database:** MySQL/PostgreSQL
@@ -50,7 +50,11 @@ shaka/
 
 ### MVP Features (Week 1-12):
 - [x] Project Structure Setup
-- [ ] Authentication & Authorization
+- [x] Backend API with Laravel 12 + Sanctum + Spatie Permission
+- [x] Frontend with Vue 3 + Quasar Framework + Pinia
+- [x] Authentication & Authorization System
+- [x] Role-based Access Control (Admin, Manager, Cashier)
+- [x] Development Environment Setup
 - [ ] Product Management
 - [ ] Basic POS Interface
 - [ ] Cash Transaction Processing

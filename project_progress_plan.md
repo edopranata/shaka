@@ -1,8 +1,8 @@
 # 🚀 Aplikasi POS - Progress & Perencanaan Pengembangan
 
 ## 📋 Overview Project
-**Teknologi Stack:**
-- Backend: Laravel 10+
+## Tech Stack
+- Backend: Laravel 12+
 - Frontend: Vue 3 + Quasar Framework
 - State Management: Pinia
 - Database: MySQL/PostgreSQL
@@ -45,7 +45,7 @@
 **Priority:** 🔥 Critical - MVP Foundation
 
 #### Backend Tasks:
-- [ ] Setup Laravel 10+ project dengan Sanctum
+- [ ] Setup Laravel 12+ project dengan Sanctum
 - [ ] Install & configure Spatie Laravel Permission
 - [ ] Database migration untuk user management
 - [ ] Model & Controller untuk Authentication
@@ -513,7 +513,7 @@ payment_methods
 ## 🛠️ Updated Development Setup Checklist
 
 ### Backend Setup:
-- [ ] Laravel 10+ installation
+- [ ] Laravel 12+ installation
 - [ ] Database configuration (MySQL/PostgreSQL)
 - [ ] Sanctum setup dengan API tokens
 - [ ] Spatie Permission package
@@ -1063,13 +1063,13 @@ Frontend Updates:
 #### Major Version Upgrade Schedule:
 ```markdown
 Year 1 (Development & Launch):
-- Laravel 10.x (LTS) - Stable throughout development
-- Vue 3.3.x - Latest stable
-- Quasar 2.x - Current stable
+- Laravel 12.x (LTS) - Stable throughout development
+- Vue 3.4.x - Latest stable
+- Quasar 2.16.x - Current stable
 
 Year 2 (Post-Launch Maintenance):
-- Evaluate Laravel 11 migration
-- Vue 3.4+ feature adoption
+- Evaluate Laravel 13 migration
+- Vue 3.5+ feature adoption
 - Quasar 3.x consideration (when stable)
 
 Year 3+ (Growth Phase):

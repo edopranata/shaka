@@ -160,13 +160,13 @@ const toggleLeftDrawer = () => {
 const logout = async () => {
   try {
     await authStore.logout()
-    
+
     notify.success('Logout berhasil')
-    
+
     router.push('/login')
   } catch (error) {
     console.error('Logout error:', error)
-    
+
     notify.error('Terjadi kesalahan saat logout')
   }
 }

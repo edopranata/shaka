@@ -26,7 +26,7 @@ class UserSeeder extends Seeder
                 'email_verified_at' => now(),
             ]
         );
-        
+
         $admin->assignRole('admin');
 
         // Create manager user
@@ -42,7 +42,7 @@ class UserSeeder extends Seeder
                 'email_verified_at' => now(),
             ]
         );
-        
+
         $manager->assignRole('manager');
 
         // Create cashier user
@@ -58,7 +58,7 @@ class UserSeeder extends Seeder
                 'email_verified_at' => now(),
             ]
         );
-        
+
         $cashier->assignRole('cashier');
     }
 }

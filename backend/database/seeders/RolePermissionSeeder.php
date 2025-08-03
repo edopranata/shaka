@@ -20,36 +20,36 @@ class RolePermissionSeeder extends Seeder
             'users.create',
             'users.edit',
             'users.delete',
-            
+
             // Product management
             'products.view',
             'products.create',
             'products.edit',
             'products.delete',
-            
+
             // Category management
             'categories.view',
             'categories.create',
             'categories.edit',
             'categories.delete',
-            
+
             // Customer management
             'customers.view',
             'customers.create',
             'customers.edit',
             'customers.delete',
-            
+
             // Transaction management
             'transactions.view',
             'transactions.create',
             'transactions.edit',
             'transactions.delete',
             'transactions.process',
-            
+
             // Reports
             'reports.view',
             'reports.export',
-            
+
             // Settings
             'settings.view',
             'settings.edit',
@@ -65,7 +65,7 @@ class RolePermissionSeeder extends Seeder
         $managerRole = Role::firstOrCreate(['name' => 'manager']);
 
         // Assign permissions to roles
-        
+
         // Admin gets all permissions
         $adminRole->givePermissionTo(Permission::all());
 

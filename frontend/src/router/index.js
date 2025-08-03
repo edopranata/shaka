@@ -38,14 +38,14 @@ export default defineRouter(function (/* { store, ssrContext } */) {
   // Navigation guard for authentication
   Router.beforeEach((to, from, next) => {
     const authStore = useAuthStore()
-    
+
     // Initialize auth from LocalStorage if not already done
     if (!authStore.isAuthenticated && LocalStorage.getItem('token')) {
       authStore.initAuth()
     }
-    
+
     const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
-    
+
     if (requiresAuth && !authStore.isAuthenticated) {
       // Redirect to login if trying to access protected route without auth
       next('/login')

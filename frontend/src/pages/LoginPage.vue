@@ -100,12 +100,12 @@ const error = ref('')
 const onSubmit = async () => {
   loading.value = true
   error.value = ''
-  
+
   try {
     await authStore.login(form.value)
-    
+
     notify.success(`Selamat datang, ${authStore.userName}!`)
-    
+
     // Redirect to dashboard
     router.push('/')
   } catch (err) {

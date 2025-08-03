@@ -17,7 +17,7 @@ export const useAuthStore = defineStore('auth', {
     },
     hasPermission: (state) => (permission) => {
       if (!state.user?.roles) return false
-      return state.user.roles.some(role => 
+      return state.user.roles.some(role =>
         role.permissions?.some(p => p.name === permission)
       )
     },
@@ -29,19 +29,19 @@ export const useAuthStore = defineStore('auth', {
     async login(credentials) {
       this.loading = true
       this.error = null
-      
+
       try {
         const response = await api.post('/login', credentials)
         const { user, token } = response.data
-        
+
         this.user = user
         this.token = token
         this.isAuthenticated = true
-        
+
         // Store in LocalStorage
         LocalStorage.set('token', token)
         LocalStorage.set('user', user)
-        
+
         return { success: true, user, token }
       } catch (error) {
         this.error = error.response?.data?.message || 'Login failed'
@@ -70,7 +70,7 @@ export const useAuthStore = defineStore('auth', {
 
     async getMe() {
       if (!this.token) return false
-      
+
       try {
         const response = await api.get('/me')
         this.user = response.data.user
@@ -86,14 +86,14 @@ export const useAuthStore = defineStore('auth', {
 
     async refreshToken() {
       if (!this.token) return false
-      
+
       try {
         const response = await api.post('/refresh')
         const { user, token } = response.data
-        
+
         this.user = user
         this.token = token
-        
+
         LocalStorage.set('token', token)
         LocalStorage.set('user', user)
         return true
@@ -108,12 +108,12 @@ export const useAuthStore = defineStore('auth', {
     initAuth() {
       const token = LocalStorage.getItem('token')
       const user = LocalStorage.getItem('user')
-      
+
       if (token && user) {
         this.token = token
         this.user = user
         this.isAuthenticated = true
-        
+
         // Verify token is still valid
         this.getMe()
       }
