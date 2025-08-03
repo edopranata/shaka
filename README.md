@@ -1,5 +1,18 @@
 # 🚀 Shaka POS - Point of Sales Application
 
+<div align="center">
+
+[![Laravel](https://img.shields.io/badge/Laravel-12-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)](https://laravel.com)
+[![Vue.js](https://img.shields.io/badge/Vue.js-3-4FC08D?style=for-the-badge&logo=vue.js&logoColor=white)](https://vuejs.org)
+[![Quasar](https://img.shields.io/badge/Quasar-2.18.2-1976D2?style=for-the-badge&logo=quasar&logoColor=white)](https://quasar.dev)
+[![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
+
+![Sprint 1 Complete](https://img.shields.io/badge/Sprint_1-✅_Complete-success?style=for-the-badge&color=28a745)
+![Version](https://img.shields.io/badge/Version-v0.1.0--sprint1-blue?style=for-the-badge)
+![Status](https://img.shields.io/badge/Status-In_Development-orange?style=for-the-badge)
+
+</div>
+
 ## 📋 Project Overview
 
 Shaka POS adalah aplikasi Point of Sales (POS) modern yang dibangun dengan Laravel 12+ sebagai backend API dan Vue 3 + Quasar Framework sebagai frontend. Aplikasi ini dirancang untuk mendukung operasional toko retail dengan fitur lengkap mulai dari manajemen produk, transaksi penjualan, hingga pelaporan bisnis.
@@ -44,21 +57,41 @@ shaka/
 └── docker-compose.yml
 ```
 
-## 🚦 Development Status
+## � Screenshots
 
-**Current Phase:** Sprint 0 - Technical Spikes & Foundation Setup
+### Authentication
+<div align="center">
+  <img src="./images/login-light.png" alt="Login Page - Light Mode" width="45%">
+  <img src="./images/login-dark.png" alt="Login Page - Dark Mode" width="45%">
+  <p><em>Login Page - Light Mode & Dark Mode</em></p>
+</div>
+
+### Dashboard
+<div align="center">
+  <img src="./images/dashboard-light.png" alt="Dashboard - Light Mode" width="45%">
+  <img src="./images/dashboard-dark.png" alt="Dashboard - Dark Mode" width="45%">
+  <p><em>Dashboard - Light Mode & Dark Mode</em></p>
+</div>
+
+## �🚦 Development Status
+
+**Current Phase:** Sprint 1 Complete ✅ - Authentication & Foundation
 
 ### MVP Features (Week 1-12):
-- [x] Project Structure Setup
-- [x] Backend API with Laravel 12 + Sanctum + Spatie Permission
-- [x] Frontend with Vue 3 + Quasar Framework + Pinia
-- [x] Authentication & Authorization System
-- [x] Role-based Access Control (Admin, Manager, Cashier)
-- [x] Development Environment Setup
-- [ ] Product Management
-- [ ] Basic POS Interface
-- [ ] Cash Transaction Processing
-- [ ] Basic Reporting
+### MVP Features (Week 1-12):
+- [x] **Sprint 1 Complete ✅** - Authentication & Foundation (August 3, 2025)
+  - [x] Laravel 12 + Sanctum + Spatie Permission backend
+  - [x] Vue 3 + Quasar Framework + Pinia frontend  
+  - [x] Theme switcher (Light/Dark/Auto) dengan LocalStorage
+  - [x] Language switcher (EN/ID) dengan flag icons
+  - [x] Modern UI dengan glassmorphism effects
+  - [x] Responsive design & accessibility features
+  - [x] API documentation dengan Scribe
+  - [x] Activity logging & audit trails
+- [ ] **Sprint 2** - Product Management System
+- [ ] **Sprint 3** - Basic POS Interface  
+- [ ] **Sprint 4** - Store Management
+- [ ] **Sprint 5** - Basic Reporting & MVP Testing
 
 ### Post-MVP Features (Week 13-20):
 - [ ] Purchase Management
@@ -101,6 +134,7 @@ docker-compose up -d
 
 ## 📚 Documentation
 
+- [📱 Visual Demo & Screenshots](./VISUAL_DEMO.md) - Comprehensive visual guide
 - [API Documentation](./docs/api.md)
 - [Frontend Documentation](./docs/frontend.md)
 - [Deployment Guide](./docs/deployment.md)
