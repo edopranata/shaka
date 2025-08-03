@@ -115,7 +115,8 @@ export default defineConfig((ctx) => {
         'Loading',
         'LocalStorage',
         'SessionStorage',
-        'Cookies'
+        'Cookies',
+        'Dark'
       ],
     },
 

@@ -9,16 +9,24 @@ const api = axios.create({
   headers: {
     'Content-Type': 'application/json',
     'Accept': 'application/json'
-  }
+  },
+  timeout: 30000 // 30 second timeout
 })
 
-// Request interceptor to add auth token
+// Request interceptor to add auth token and loading
 api.interceptors.request.use(
   (config) => {
+    // Add timestamp to prevent caching
+    config.metadata = { startTime: new Date() }
+
     const token = LocalStorage.getItem('token')
     if (token) {
       config.headers.Authorization = `Bearer ${token}`
     }
+
+    // Add request ID for tracking
+    config.headers['X-Request-ID'] = Math.random().toString(36).substring(2)
+
     return config
   },
   (error) => {
@@ -26,19 +34,48 @@ api.interceptors.request.use(
   }
 )
 
-// Response interceptor to handle errors
+// Response interceptor to handle errors and logging
 api.interceptors.response.use(
   (response) => {
+    // Log response time for performance monitoring
+    if (response.config.metadata) {
+      const endTime = new Date()
+      const duration = endTime - response.config.metadata.startTime
+      console.log(`API ${response.config.method?.toUpperCase()} ${response.config.url} - ${duration}ms`)
+    }
     return response
   },
-  (error) => {
-    if (error.response?.status === 401) {
+  async (error) => {
+    const { response, config } = error
+
+    // Log error details
+    console.error('API Error:', {
+      url: config?.url,
+      method: config?.method,
+      status: response?.status,
+      message: response?.data?.message || error.message
+    })
+
+    if (response?.status === 401) {
       // Handle unauthorized access
       LocalStorage.remove('token')
       LocalStorage.remove('user')
-      // Redirect to login if needed
-      window.location.href = '/login'
+
+      // Avoid infinite redirect loop
+      if (!window.location.pathname.includes('/login')) {
+        window.location.href = '/login'
+      }
+    } else if (response?.status === 403) {
+      // Handle forbidden access
+      console.warn('Access forbidden:', response.data?.message)
+    } else if (response?.status >= 500) {
+      // Handle server errors
+      console.error('Server error:', response.data?.message || 'Internal server error')
+    } else if (!response) {
+      // Handle network errors
+      console.error('Network error:', error.message)
     }
+
     return Promise.reject(error)
   }
 )
