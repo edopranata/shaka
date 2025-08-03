@@ -105,18 +105,21 @@ activity_logs
 **Priority:** 🔥 Critical - MVP Core
 
 #### Backend Tasks:
-- [ ] Database migration untuk products, categories, units
+- [ ] Database migration untuk products, categories, units, suppliers
 - [ ] Model & relationships untuk Product management
-- [ ] API CRUD untuk categories, units, products
+- [ ] **NEW:** Supplier model & management (moved from Sprint 6)
+- [ ] API CRUD untuk categories, units, products, suppliers
 - [ ] Barcode generation & validation
 - [ ] Image upload handling untuk products (with security validation)
 - [ ] Seeder untuk sample data
 - [ ] **NEW:** Product search & filtering optimization
 - [ ] **NEW:** Bulk import/export functionality
+- [ ] **NEW:** Basic stock movement tracking foundation
 
 #### Frontend Tasks:
 - [ ] Product management pages (list, create, edit)
 - [ ] Category & Unit management
+- [ ] **NEW:** Basic Supplier management interface
 - [ ] Image upload component with preview
 - [ ] Barcode scanner integration (based on spike results)
 - [ ] Search & filter functionality with debouncing
@@ -132,6 +135,10 @@ categories
 units
 - id, name, symbol, conversion_base, created_at, updated_at
 
+-- NEW: Suppliers (moved from Sprint 6)
+suppliers
+- id, name, contact_person, phone, email, address, status, created_at, updated_at
+
 products
 - id, name, sku, barcode, category_id, description, image, status, min_stock, created_at, updated_at
 
@@ -141,31 +148,101 @@ product_units
 -- NEW: Product images (multiple)
 product_images
 - id, product_id, image_path, is_primary, alt_text, created_at, updated_at
+
+-- NEW: Stock movements foundation for FIFO
+stock_movements
+- id, product_id, location_id, type, quantity, unit_cost, batch_number, expiry_date, reference_id, reference_type, created_at
+
+-- NEW: Product batches for FIFO tracking
+product_batches
+- id, product_id, supplier_id, batch_number, quantity, remaining_quantity, unit_cost, expiry_date, manufactured_date, created_at, updated_at
 ```
 
 **Deliverables:**
 - ✅ Complete product management
 - ✅ Category & unit management
+- ✅ **NEW:** Basic supplier management
 - ✅ Barcode support
 - ✅ **NEW:** Bulk operations
 - ✅ **NEW:** Advanced search
+- ✅ **NEW:** Stock movement foundation
+- ✅ **NEW:** FIFO batch tracking foundation
 
 **MVP Status:** ✅ Essential for MVP
 
 ---
 
-### Sprint 3: Basic POS Interface - MVP Core (Week 7-9) 🛒
-**Durasi:** 15 hari kerja (moved up and enhanced)
+### Sprint 3: Purchase Management & FIFO System (Week 7-8) 📋
+**Durasi:** 10 hari kerja (NEW - moved and enhanced from Sprint 6)
+**Priority:** 🔥 Critical - Essential for Proper Inventory
+
+#### Backend Tasks:
+- [ ] **Purchase models & migrations (purchases, purchase_items)**
+- [ ] **FIFO algorithm implementation**
+- [ ] **Batch tracking system**
+- [ ] **Stock incoming logic with FIFO**
+- [ ] **Expiry date management**
+- [ ] **Cost calculation dengan FIFO method**
+- [ ] **Supplier return handling**
+- [ ] **Purchase order workflow & approval**
+- [ ] **Purchase API endpoints**
+
+#### Frontend Tasks:
+- [ ] **Purchase order interface**
+- [ ] **Goods receipt interface dengan batch tracking**
+- [ ] **Purchase reports dengan cost analysis**
+- [ ] **Purchase approval workflow interface**
+- [ ] **FIFO stock visualization**
+- [ ] **Expiry date alerts & management**
+- [ ] **Supplier performance tracking**
+
+#### Database Schema:
+```sql
+purchases
+- id, supplier_id, invoice_number, purchase_date, subtotal, tax, total, status, approved_by, created_at, updated_at
+
+purchase_items
+- id, purchase_id, product_id, unit_id, quantity, unit_cost, total, batch_number, expiry_date, created_at, updated_at
+
+-- Enhanced batch tracking for FIFO
+product_batches (enhanced)
+- id, product_id, supplier_id, purchase_id, batch_number, initial_quantity, current_quantity, unit_cost, expiry_date, manufactured_date, status, created_at, updated_at
+
+-- FIFO transaction tracking
+fifo_transactions
+- id, product_id, transaction_type, reference_id, batch_id, quantity, unit_cost, remaining_after, created_at
+
+-- Stock movements (enhanced)
+stock_movements (enhanced)
+- id, product_id, location_id, batch_id, type, quantity, unit_cost, reference_id, reference_type, notes, created_at
+```
+
+**Deliverables:**
+- ✅ **Complete Purchase Management System**
+- ✅ **FIFO Cost Calculation**
+- ✅ **Batch & Expiry Tracking**
+- ✅ **Stock Movement dengan FIFO**
+- ✅ **Purchase Order Workflow**
+- ✅ **Supplier Integration**
+
+**MVP Status:** 🔥 **Critical for Accurate Inventory Costing**
+
+---
+
+### Sprint 4: Basic POS Interface - MVP Core (Week 9-11) 🛒
+**Durasi:** 15 hari kerja (moved from Sprint 3, enhanced with FIFO)
 **Priority:** 🔥 Critical - MVP Core Feature
 
 #### Backend Tasks:
 - [ ] Transaction models & migrations (simplified for MVP)
 - [ ] Basic POS API endpoints
-- [ ] Simple stock update logic
+- [ ] **FIFO-based stock deduction logic**
+- [ ] **Cost of Goods Sold (COGS) calculation dengan FIFO**
 - [ ] Receipt generation API
 - [ ] Cash payment processing logic
 - [ ] **NEW:** Transaction validation rules
-- [ ] **NEW:** Basic inventory checks
+- [ ] **NEW:** FIFO inventory checks**
+- [ ] **NEW:** Real-time stock updates dengan batch tracking**
 
 #### Frontend Tasks:
 - [ ] **Core POS interface** dengan Quasar (single store only)
@@ -176,6 +253,8 @@ product_images
 - [ ] Receipt printing (browser print)
 - [ ] Basic keyboard shortcuts
 - [ ] **NEW:** Transaction summary & confirmation
+- [ ] **NEW:** FIFO cost display untuk products**
+- [ ] **NEW:** Batch expiry warnings**
 
 #### Database Schema (MVP Simplified):
 ```sql
@@ -186,18 +265,29 @@ transactions
 - id, invoice_number, user_id, customer_id, subtotal, total, payment_method, status, created_at, updated_at
 
 transaction_items
-- id, transaction_id, product_id, unit_id, quantity, unit_price, total, created_at, updated_at
+- id, transaction_id, product_id, unit_id, quantity, unit_price, unit_cost, total, batch_id, created_at, updated_at
 
 -- Simplified payments (cash only for MVP)
 payments
 - id, transaction_id, method (cash), amount, created_at, updated_at
 
--- Basic stock tracking
+-- Enhanced stock tracking with FIFO
 product_stocks
-- id, product_id, quantity, reserved_quantity, created_at, updated_at
+- id, product_id, location_id, total_quantity, reserved_quantity, created_at, updated_at
+
+-- FIFO cost tracking for transactions
+transaction_costs
+- id, transaction_item_id, batch_id, quantity, unit_cost, total_cost, created_at
 ```
 
 **Deliverables:**
+- ✅ **Functional POS interface dengan FIFO costing**
+- ✅ **Cash transaction processing**
+- ✅ **Receipt generation**
+- ✅ **FIFO inventory updates**
+- ✅ **Accurate COGS calculation**
+
+**MVP Status:** ✅ **Core MVP Feature** - Deliverable by Week 11
 - ✅ **Functional basic POS interface**
 - ✅ **Cash transaction processing**
 - ✅ **Receipt generation**
@@ -207,108 +297,85 @@ product_stocks
 
 ---
 
-### Sprint 4: Store & Warehouse Management (Week 10) 🏪
+### Sprint 5: Store & Warehouse Management (Week 12) 🏪
 **Durasi:** 5 hari kerja (simplified for MVP)
 **Priority:** 🟡 Important - Post-MVP
 
 #### Backend Tasks:
 - [ ] Basic store model (single store for MVP)
-- [ ] Simple warehouse/location tracking
+- [ ] Simple warehouse/location tracking dengan FIFO support
 - [ ] User-store assignment (basic)
+- [ ] **Location-based FIFO tracking**
 
 #### Frontend Tasks:
 - [ ] Basic store settings page
 - [ ] Location/warehouse selector
+- [ ] **FIFO stock view per location**
 
 #### Database Schema (Simplified):
 ```sql
 stores
 - id, name, address, phone, status, created_at, updated_at
 
-locations (simplified warehouse)
+locations (simplified warehouse dengan FIFO support)
 - id, store_id, name, created_at, updated_at
 
 user_stores
 - id, user_id, store_id, created_at, updated_at
+
+-- Enhanced for FIFO per location
+location_stocks
+- id, location_id, product_id, batch_id, quantity, created_at, updated_at
 ```
 
 **Deliverables:**
 - ✅ Basic store management
-- ✅ Simple location tracking
+- ✅ Simple location tracking dengan FIFO
+- ✅ **Location-based FIFO inventory**
 
 **MVP Status:** 🔄 **Post-MVP** (Week 13+)
 
 ---
 
-### Sprint 5: Basic Reporting & MVP Testing (Week 11-12) 📊
+### Sprint 6: Basic Reporting & MVP Testing (Week 13-14) 📊
+### Sprint 6: Basic Reporting & MVP Testing (Week 13-14) 📊
 **Durasi:** 10 hari kerja
 **Priority:** 🔥 Critical - MVP Completion
 
 #### Backend Tasks:
-- [ ] **Basic sales reporting API**
-- [ ] **Daily/weekly sales summaries**
-- [ ] **Stock level reports**
-- [ ] **Transaction history API**
+- [ ] **Basic sales reporting API dengan FIFO costing**
+- [ ] **Daily/weekly sales summaries dengan accurate COGS**
+- [ ] **Stock level reports dengan batch information**
+- [ ] **FIFO cost analysis reports**
+- [ ] **Transaction history API dengan cost tracking**
 - [ ] **MVP comprehensive testing**
+- [ ] **Purchase reports dengan supplier analysis**
 
 #### Frontend Tasks:
 - [ ] **Simple dashboard dengan basic charts**
-- [ ] **Sales summary reports**
-- [ ] **Stock status overview**
-- [ ] **Transaction history viewer**
+- [ ] **Sales summary reports dengan profit analysis**
+- [ ] **Stock status overview dengan batch expiry alerts**
+- [ ] **FIFO cost tracking visualization**
+- [ ] **Transaction history viewer dengan cost details**
 - [ ] **MVP user acceptance testing**
+- [ ] **Purchase & supplier reports**
 
 #### Libraries:
 - Chart.js untuk basic visualizations
 - Simple export to CSV
+- **NEW:** FIFO cost calculation libraries
 
 **Deliverables:**
-- ✅ **Basic reporting dashboard**
-- ✅ **MVP fully functional and tested**
+- ✅ **Basic reporting dashboard dengan FIFO costing**
+- ✅ **MVP fully functional dengan accurate inventory costing**
 - ✅ **User acceptance criteria met**
+- ✅ **FIFO system fully tested**
 
-**MVP Status:** ✅ **MVP COMPLETE** - Ready for deployment by Week 12
-
----
-
-## 🚀 **POST-MVP FEATURES** (Week 13-20)
-
-### Sprint 6: Purchase & Supplier Management (Week 13-14) 📋
-**Durasi:** 10 hari kerja
-**Priority:** 🟡 Important - Post-MVP Enhancement
-
-#### Backend Tasks:
-- [ ] Supplier & purchase models
-- [ ] Purchase API endpoints  
-- [ ] Stock incoming logic
-- [ ] Supplier return handling
-- [ ] **Purchase order workflow**
-
-#### Frontend Tasks:
-- [ ] Supplier management
-- [ ] Purchase order interface
-- [ ] Goods receipt interface
-- [ ] Purchase reports
-- [ ] **Purchase approval workflow**
-
-#### Database Schema:
-```sql
-suppliers
-- id, name, contact_person, phone, email, address, status, created_at, updated_at
-
-purchases
-- id, supplier_id, invoice_number, purchase_date, subtotal, tax, total, status, created_at, updated_at
-
-purchase_items
-- id, purchase_id, product_id, unit_id, quantity, unit_cost, total, created_at, updated_at
-```
-
-**Deliverables:**
-- ✅ Supplier management
-- ✅ Purchase order system
-- ✅ Stock receiving
+**MVP Status:** ✅ **MVP COMPLETE** - Ready for deployment by Week 14
 
 ---
+
+## 🚀 **POST-MVP FEATURES** (Week 15-20)
 
 ### Sprint 7: Member & Advanced Pricing (Week 15-16) 👥
 **Durasi:** 10 hari kerja
@@ -488,16 +555,16 @@ payment_methods
 
 ## 📊 Updated Progress Tracking
 
-### MVP Development Phase (Week 0-12):
+### MVP Development Phase (Week 0-14):
 - [ ] **Sprint 0:** Technical Spikes & Risk Mitigation (0%)
 - [x] **Sprint 1:** Authentication & Foundation (100%) 🔥 ✅ COMPLETE
-- [ ] **Sprint 2:** Product Management (0%) 🔥 Critical  
-- [ ] **Sprint 3:** Basic POS Interface (0%) 🔥 Critical
-- [ ] **Sprint 4:** Store Management (0%) 🟡 Important
-- [ ] **Sprint 5:** Basic Reporting & MVP Testing (0%) 🔥 Critical
+- [ ] **Sprint 2:** Product & Inventory + Basic Supplier Management (0%) 🔥 Critical  
+- [ ] **Sprint 3:** Purchase Management & FIFO System (0%) 🔥 Critical
+- [ ] **Sprint 4:** Basic POS Interface dengan FIFO (0%) 🔥 Critical
+- [ ] **Sprint 5:** Store Management (0%) 🟡 Important
+- [ ] **Sprint 6:** Basic Reporting & MVP Testing (0%) 🔥 Critical
 
-### Post-MVP Enhancement Phase (Week 13-20):
-- [ ] **Sprint 6:** Purchase Management (0%) 🟡 Important
+### Post-MVP Enhancement Phase (Week 15-20):
 - [ ] **Sprint 7:** Member & Advanced Pricing (0%) 🟡 Important
 - [ ] **Sprint 8:** Advanced Stock Management (0%) 🟡 Important
 - [ ] **Sprint 9:** Discount & Electronic Payments (0%) 🟡 Important
@@ -506,10 +573,11 @@ payment_methods
 
 ### Updated Milestone Markers:
 - 🏁 **Week 3:** ✅ Authentication & Foundation Complete (August 3, 2025)
-- 🏁 **Week 6:** Product Management Complete (Target)
-- 🏁 **Week 9:** Basic POS Functional (Target)
-- 🏁 **Week 12:** 🎯 **MVP READY FOR DEPLOYMENT** (Target)
-- 🏁 **Week 16:** Advanced Features Complete (Target)
+- 🏁 **Week 6:** Product & Inventory + Basic Supplier Complete (Target)
+- 🏁 **Week 8:** Purchase Management & FIFO System Complete (Target)
+- 🏁 **Week 11:** Basic POS dengan FIFO Functional (Target)
+- 🏁 **Week 14:** 🎯 **MVP READY FOR DEPLOYMENT** (Target)
+- 🏁 **Week 18:** Advanced Features Complete (Target)
 - 🏁 **Week 20:** 🎯 **FULL PRODUCTION READY** (Target)
 
 ### Risk Status Tracking:
