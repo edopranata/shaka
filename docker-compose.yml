@@ -1,0 +1,99 @@
+version: '3.8'
+
+services:
+  # Laravel Backend
+  backend:
+    build:
+      context: ./backend
+      dockerfile: ../docker/backend/Dockerfile
+    container_name: simplepos-backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/var/www/html
+      - /var/www/html/vendor
+    environment:
+      - APP_ENV=local
+      - APP_DEBUG=true
+      - DB_CONNECTION=mysql
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_DATABASE=simplepos
+      - DB_USERNAME=root
+      - DB_PASSWORD=secret
+    depends_on:
+      - mysql
+      - redis
+    networks:
+      - simplepos-network
+
+  # Vue + Quasar Frontend
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: ../docker/frontend/Dockerfile
+    container_name: simplepos-frontend
+    ports:
+      - "9000:9000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      - VITE_API_URL=http://localhost:8000/api
+    depends_on:
+      - backend
+    networks:
+      - simplepos-network
+
+  # MySQL Database
+  mysql:
+    image: mysql:8.0
+    container_name: simplepos-mysql
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=secret
+      - MYSQL_DATABASE=simplepos
+      - MYSQL_USER=simplepos
+      - MYSQL_PASSWORD=secret
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./database/init:/docker-entrypoint-initdb.d
+    networks:
+      - simplepos-network
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    container_name: simplepos-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - simplepos-network
+
+  # phpMyAdmin (optional)
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: simplepos-phpmyadmin
+    ports:
+      - "8080:80"
+    environment:
+      - PMA_HOST=mysql
+      - PMA_USER=root
+      - PMA_PASSWORD=secret
+    depends_on:
+      - mysql
+    networks:
+      - simplepos-network
+
+volumes:
+  mysql_data:
+    driver: local
+  redis_data:
+    driver: local
+
+networks:
+  simplepos-network:
+    driver: bridge

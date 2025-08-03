@@ -1,0 +1,49 @@
+version: 2
+updates:
+  # Backend PHP dependencies
+  - package-ecosystem: "composer"
+    directory: "/backend"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+    reviewers:
+      - "itepekanbaru"
+    assignees:
+      - "itepekanbaru"
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "deps(backend)"
+      include: "scope"
+
+  # Frontend npm dependencies
+  - package-ecosystem: "npm"
+    directory: "/frontend"
+    schedule:
+      interval: "weekly"
+      day: "tuesday"
+      time: "09:00"
+    reviewers:
+      - "itepekanbaru"
+    assignees:
+      - "itepekanbaru"
+    open-pull-requests-limit: 10
+    commit-message:
+      prefix: "deps(frontend)"
+      include: "scope"
+
+  # GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "wednesday"
+      time: "09:00"
+    reviewers:
+      - "itepekanbaru"
+    assignees:
+      - "itepekanbaru"
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "deps(ci)"
+      include: "scope"
