@@ -2,14 +2,16 @@
 
 <div align="center">
 
-[![Larav## 🚦 Development Status
-
-**Current Phase:** Sprint 1 Complete ✅ - Authentication & Foundation  
-**Next Phase:** Sprint 2 - Product & Inventory + Basic Supplier + FIFO Foundation  
-**MVP Target:** Week 14 (extended from Week 12 for proper FIFO implementation)(https://img.shields.io/badge/Laravel-12-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)](https://laravel.com)
+[![Laravel](https://img.shields.io/badge/Laravel-12-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)](https://laravel.com)
 [![Vue.js](https://img.shields.io/badge/Vue.js-3-4FC08D?style=for-the-badge&logo=vue.js&logoColor=white)](https://vuejs.org)
 [![Quasar](https://img.shields.io/badge/Quasar-2.18.2-1976D2?style=for-the-badge&logo=quasar&logoColor=white)](https://quasar.dev)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
+
+## 🚦 Development Status
+
+**Current Phase:** Sprint 1 Complete ✅ - Authentication & Foundation  
+**Next Phase:** Sprint 2 - Product & Inventory + Basic Supplier + FIFO Foundation  
+**MVP Target:** Week 14 (extended from Week 12 for proper FIFO implementation)
 
 ![Sprint 1 Complete](https://img.shields.io/badge/Sprint_1-✅_Complete-success?style=for-the-badge&color=28a745)
 ![Version](https://img.shields.io/badge/Version-v0.1.0--sprint1-blue?style=for-the-badge)
