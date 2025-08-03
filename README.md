@@ -1,8 +1,10 @@
-# 🚀 SimplePOS - Point of Sales Application
+# 🚀 Shaka POS - Point of Sales Application
 
 ## 📋 Project Overview
 
-SimplePOS adalah aplikasi Point of Sales (POS) modern yang dibangun dengan Laravel 10+ sebagai backend API dan Vue 3 + Quasar Framework sebagai frontend. Aplikasi ini dirancang untuk mendukung operasional toko retail dengan fitur lengkap mulai dari manajemen produk, transaksi penjualan, hingga pelaporan bisnis.
+Shaka POS adalah aplikasi Point of Sales (POS) modern yang dibangun dengan Laravel 10+ sebagai backend API dan Vue 3 + Quasar Framework sebagai frontend. Aplikasi ini dirancang untuk mendukung operasional toko retail dengan fitur lengkap mulai dari manajemen produk, transaksi penjualan, hingga pelaporan bisnis.
+
+**Repository:** https://github.com/edopranata/shaka
 
 ## 🛠️ Technology Stack
 
@@ -29,7 +31,7 @@ SimplePOS adalah aplikasi Point of Sales (POS) modern yang dibangun dengan Larav
 ## 🏗️ Project Structure
 
 ```
-simplepos/
+shaka/
 ├── backend/              # Laravel API
 ├── frontend/             # Vue 3 + Quasar
 ├── docs/                 # Documentation
@@ -119,7 +121,7 @@ npm run test:e2e
 
 ### Backend (.env)
 ```env
-APP_NAME=SimplePOS
+APP_NAME="Shaka POS"
 APP_ENV=local
 APP_KEY=
 APP_DEBUG=true
@@ -128,7 +130,7 @@ APP_URL=http://localhost:8000
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
-DB_DATABASE=simplepos
+DB_DATABASE=shaka_pos
 DB_USERNAME=root
 DB_PASSWORD=
 
@@ -139,7 +141,7 @@ SPA_URL=http://localhost:9000
 ### Frontend (.env)
 ```env
 VITE_API_URL=http://localhost:8000/api
-VITE_APP_NAME=SimplePOS
+VITE_APP_NAME="Shaka POS"
 ```
 
 ## 🤝 Contributing
@@ -156,8 +158,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 👥 Team
 
-- **Developer:** [Your Name]
-- **Project Manager:** [Your Name]
+- **Developer:** Edo Pranata
+- **Project Manager:** Edo Pranata
+- **Repository:** https://github.com/edopranata/shaka
 
 ## 📞 Support
 
