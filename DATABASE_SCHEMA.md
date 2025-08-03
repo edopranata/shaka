@@ -1,11 +1,12 @@
-# 🗄️ Shaka POS - Database Schema Documentation
+# 🗄️ Shaka POS - Enhanced Database Schema Documentation
 
 ## 📋 Overview
-Dokumentasi lengkap struktur database untuk aplikasi Shaka POS dengan implementasi FIFO (First In First Out) inventory costing dan supplier management.
+Dokumentasi lengkap struktur database untuk aplikasi Shaka POS dengan implementasi FIFO (First In First Out) inventory costing, supplier management, dan advanced features untuk future development.
 
 **Last Updated:** August 3, 2025  
-**Version:** v2.0 (Enhanced with FIFO & Supplier)  
-**Database Engine:** MySQL 8.0+ / PostgreSQL 13+
+**Version:** v3.0 (Enhanced with Future Features Roadmap)  
+**Database Engine:** MySQL 8.0+ / PostgreSQL 13+  
+**Development Timeline:** MVP (Sprint 1-6) + Advanced Features (Sprint 7-14)
 
 ---
 
@@ -18,31 +19,48 @@ Dokumentasi lengkap struktur database untuk aplikasi Shaka POS dengan implementa
 - **Performance:** Optimized indexing untuk high-frequency operations
 - **Data Integrity:** Foreign keys dan constraints untuk data consistency
 
-### 📊 **Schema Overview:**
+### 📊 **Enhanced Schema Overview:**
 ```
-Authentication & Users (Sprint 1) ✅
-├── users, roles, permissions
-├── user_profiles, activity_logs
+🏗️ MVP Foundation (Sprint 1-6):
+├── Authentication & Users (Sprint 1) ✅
+│   ├── users, roles, permissions
+│   ├── user_profiles, activity_logs
+├── Master Data (Sprint 2) 🔄
+│   ├── suppliers, categories, units
+│   ├── products, product_units, product_images
+│   ├── product_batches, stock_movements
+├── Purchase Management (Sprint 3) 🔄
+│   ├── purchases, purchase_items
+│   ├── fifo_transactions
+├── Sales & POS (Sprint 4) 🔄
+│   ├── customers, transactions, transaction_items
+│   ├── payments, transaction_costs
+├── Store & Location (Sprint 5) 🔄
+│   ├── stores, locations, user_stores
+│   ├── location_stocks
+├── Reporting & Analytics (Sprint 6) 🔄
+│   ├── Views dan materialized views untuk reporting
 
-Master Data (Sprint 2) 🔄
-├── suppliers, categories, units
-├── products, product_units, product_images
-├── product_batches, stock_movements
-
-Purchase Management (Sprint 3) 🔄
-├── purchases, purchase_items
-├── fifo_transactions
-
-Sales & POS (Sprint 4) 🔄
-├── customers, transactions, transaction_items
-├── payments, transaction_costs
-
-Store & Location (Sprint 5) 🔄
-├── stores, locations, user_stores
-├── location_stocks
-
-Reporting & Analytics (Sprint 6) 🔄
-├── Views dan materialized views untuk reporting
+🚀 Advanced Features Roadmap (Sprint 7-14):
+├── Customer Excellence (Sprint 7-8) 📈
+│   ├── customer_tiers, customer_points_transactions
+│   ├── customer_referrals, promotions, promotion_products
+│   ├── promotion_usages
+├── Inventory Intelligence (Sprint 9-10) 🤖
+│   ├── demand_forecasts, supplier_performance_metrics
+│   ├── auto_reorder_rules, stock_aging_snapshots
+├── Business Intelligence (Sprint 9-10) 📊
+│   ├── business_kpis, sales_analytics_daily
+│   ├── customer_behavior_patterns
+├── Financial Integration (Sprint 11-12) 💰
+│   ├── chart_of_accounts, journal_entries
+│   ├── journal_entry_lines, tax_rates
+├── E-commerce Platform (Sprint 11-12) 🛒
+│   ├── ecommerce_platforms, ecommerce_product_listings
+│   ├── ecommerce_orders
+├── IoT & Analytics (Sprint 13-14) 🔮
+│   ├── iot_devices, iot_sensor_readings
+│   ├── scan_logs, ml_models, ml_predictions
 ```
 
 ---
@@ -817,8 +835,403 @@ DELIMITER ;
 
 ---
 
-*Database Schema Version: 2.0*  
+## 🚀 **ADVANCED FEATURES DATABASE SCHEMA** (Sprint 7-14)
+
+### 🎯 **9. Customer Excellence System (Sprint 7-8)**
+
+#### `customer_tiers`
+```sql
+CREATE TABLE customer_tiers (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    min_points INTEGER DEFAULT 0,
+    min_purchases_amount DECIMAL(15,2) DEFAULT 0,
+    discount_percentage DECIMAL(5,2) DEFAULT 0,
+    benefits JSON, -- Store tier benefits as JSON
+    tier_color VARCHAR(7) DEFAULT '#000000', -- Hex color for UI
+    is_active BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    
+    INDEX idx_customer_tiers_active (is_active),
+    INDEX idx_customer_tiers_points (min_points)
+);
+```
+
+#### `customer_points_transactions`
+```sql
+CREATE TABLE customer_points_transactions (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    customer_id BIGINT UNSIGNED NOT NULL,
+    transaction_id BIGINT UNSIGNED,
+    transaction_type ENUM('earn', 'redeem', 'expire', 'adjustment', 'bonus') NOT NULL,
+    points INTEGER NOT NULL,
+    description VARCHAR(255),
+    expires_at DATE,
+    is_expired BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    
+    FOREIGN KEY (customer_id) REFERENCES customers(id) ON DELETE CASCADE,
+    FOREIGN KEY (transaction_id) REFERENCES transactions(id) ON DELETE SET NULL,
+    INDEX idx_points_customer (customer_id),
+    INDEX idx_points_expiry (expires_at),
+    INDEX idx_points_type (transaction_type),
+    INDEX idx_points_expired (is_expired)
+);
+```
+
+#### `customer_referrals`
+```sql
+CREATE TABLE customer_referrals (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    referrer_id BIGINT UNSIGNED NOT NULL,
+    referred_id BIGINT UNSIGNED NOT NULL,
+    referral_code VARCHAR(50) UNIQUE,
+    status ENUM('pending', 'completed', 'expired', 'cancelled') DEFAULT 'pending',
+    referrer_reward_points INTEGER DEFAULT 0,
+    referred_reward_points INTEGER DEFAULT 0,
+    minimum_purchase_amount DECIMAL(15,2) DEFAULT 0,
+    completed_at TIMESTAMP NULL,
+    expires_at TIMESTAMP NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    
+    FOREIGN KEY (referrer_id) REFERENCES customers(id) ON DELETE CASCADE,
+    FOREIGN KEY (referred_id) REFERENCES customers(id) ON DELETE CASCADE,
+    UNIQUE KEY uk_referral_pair (referrer_id, referred_id),
+    INDEX idx_referrals_code (referral_code),
+    INDEX idx_referrals_status (status)
+);
+```
+
+#### `promotions`
+```sql
+CREATE TABLE promotions (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    code VARCHAR(100) UNIQUE,
+    description TEXT,
+    promotion_type ENUM('percentage', 'fixed_amount', 'buy_x_get_y', 'bundle', 'tier_based', 'cashback') NOT NULL,
+    discount_value DECIMAL(15,2),
+    min_purchase_amount DECIMAL(15,2) DEFAULT 0,
+    max_discount_amount DECIMAL(15,2),
+    usage_limit_per_customer INTEGER,
+    total_usage_limit INTEGER,
+    current_usage_count INTEGER DEFAULT 0,
+    start_date DATETIME NOT NULL,
+    end_date DATETIME NOT NULL,
+    applicable_days JSON, -- [1,2,3,4,5] for Mon-Fri
+    applicable_hours JSON, -- [{"start": "09:00", "end": "17:00"}]
+    customer_tiers JSON, -- Applicable customer tiers
+    location_ids JSON, -- Applicable store locations
+    auto_apply BOOLEAN DEFAULT FALSE,
+    is_active BOOLEAN DEFAULT TRUE,
+    created_by BIGINT UNSIGNED NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    
+    FOREIGN KEY (created_by) REFERENCES users(id) ON DELETE RESTRICT,
+    INDEX idx_promotions_code (code),
+    INDEX idx_promotions_dates (start_date, end_date),
+    INDEX idx_promotions_active (is_active),
+    INDEX idx_promotions_type (promotion_type),
+    INDEX idx_promotions_auto (auto_apply)
+);
+```
+
+#### `promotion_products`
+```sql
+CREATE TABLE promotion_products (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    promotion_id BIGINT UNSIGNED NOT NULL,
+    product_id BIGINT UNSIGNED,
+    category_id BIGINT UNSIGNED,
+    inclusion_type ENUM('include', 'exclude') DEFAULT 'include',
+    min_quantity INTEGER DEFAULT 1,
+    buy_quantity INTEGER DEFAULT 1, -- For buy X get Y promotions
+    get_quantity INTEGER DEFAULT 0, -- For buy X get Y promotions
+    
+    FOREIGN KEY (promotion_id) REFERENCES promotions(id) ON DELETE CASCADE,
+    FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE,
+    FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE CASCADE,
+    INDEX idx_promo_products_promotion (promotion_id),
+    INDEX idx_promo_products_product (product_id),
+    INDEX idx_promo_products_category (category_id)
+);
+```
+
+#### `promotion_usages`
+```sql
+CREATE TABLE promotion_usages (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    promotion_id BIGINT UNSIGNED NOT NULL,
+    transaction_id BIGINT UNSIGNED NOT NULL,
+    customer_id BIGINT UNSIGNED,
+    discount_amount DECIMAL(15,2) NOT NULL,
+    cashback_amount DECIMAL(15,2) DEFAULT 0,
+    points_earned INTEGER DEFAULT 0,
+    used_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    
+    FOREIGN KEY (promotion_id) REFERENCES promotions(id) ON DELETE CASCADE,
+    FOREIGN KEY (transaction_id) REFERENCES transactions(id) ON DELETE CASCADE,
+    FOREIGN KEY (customer_id) REFERENCES customers(id) ON DELETE SET NULL,
+    INDEX idx_promo_usage_promotion (promotion_id),
+    INDEX idx_promo_usage_customer (customer_id),
+    INDEX idx_promo_usage_date (used_at)
+);
+```
+
+### 🤖 **10. Inventory Intelligence System (Sprint 9-10)**
+
+#### `demand_forecasts`
+```sql
+CREATE TABLE demand_forecasts (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    product_id BIGINT UNSIGNED NOT NULL,
+    location_id BIGINT UNSIGNED,
+    forecast_date DATE NOT NULL,
+    forecast_period ENUM('daily', 'weekly', 'monthly') DEFAULT 'daily',
+    predicted_demand DECIMAL(12,4) NOT NULL,
+    confidence_level DECIMAL(5,2), -- 0-100%
+    seasonal_factor DECIMAL(8,4) DEFAULT 1.0000,
+    trend_factor DECIMAL(8,4) DEFAULT 1.0000,
+    promotional_impact DECIMAL(8,4) DEFAULT 1.0000,
+    weather_impact DECIMAL(8,4) DEFAULT 1.0000,
+    forecast_method ENUM('moving_average', 'exponential_smoothing', 'linear_regression', 'seasonal_decomposition', 'neural_network') NOT NULL,
+    model_accuracy DECIMAL(5,2), -- Historical accuracy %
+    actual_demand DECIMAL(12,4), -- Filled after actual data available
+    forecast_error DECIMAL(12,4), -- Calculated after actual data
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    
+    FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE,
+    FOREIGN KEY (location_id) REFERENCES locations(id) ON DELETE CASCADE,
+    UNIQUE KEY uk_demand_forecast (product_id, location_id, forecast_date, forecast_period),
+    INDEX idx_forecasts_date (forecast_date),
+    INDEX idx_forecasts_product (product_id),
+    INDEX idx_forecasts_accuracy (model_accuracy)
+);
+```
+
+#### `supplier_performance_metrics`
+```sql
+CREATE TABLE supplier_performance_metrics (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    supplier_id BIGINT UNSIGNED NOT NULL,
+    month_year DATE NOT NULL, -- First day of month
+    total_orders INTEGER DEFAULT 0,
+    completed_orders INTEGER DEFAULT 0,
+    on_time_deliveries INTEGER DEFAULT 0,
+    early_deliveries INTEGER DEFAULT 0,
+    late_deliveries INTEGER DEFAULT 0,
+    quality_score DECIMAL(5,2) DEFAULT 0, -- 0-100%
+    avg_delivery_days DECIMAL(8,2) DEFAULT 0,
+    total_amount DECIMAL(15,2) DEFAULT 0,
+    return_rate DECIMAL(5,2) DEFAULT 0, -- 0-100%
+    defect_rate DECIMAL(5,2) DEFAULT 0, -- 0-100%
+    communication_score DECIMAL(5,2) DEFAULT 0, -- 0-100%
+    overall_rating DECIMAL(3,1) DEFAULT 0, -- 0-5 stars
+    calculated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    
+    FOREIGN KEY (supplier_id) REFERENCES suppliers(id) ON DELETE CASCADE,
+    UNIQUE KEY uk_supplier_month (supplier_id, month_year),
+    INDEX idx_supplier_performance_date (month_year),
+    INDEX idx_supplier_performance_rating (overall_rating)
+);
+```
+
+#### `auto_reorder_rules`
+```sql
+CREATE TABLE auto_reorder_rules (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    product_id BIGINT UNSIGNED NOT NULL,
+    location_id BIGINT UNSIGNED,
+    supplier_id BIGINT UNSIGNED NOT NULL,
+    rule_name VARCHAR(255),
+    trigger_level DECIMAL(12,4) NOT NULL,
+    reorder_quantity DECIMAL(12,4) NOT NULL,
+    max_stock_level DECIMAL(12,4),
+    lead_time_days INTEGER DEFAULT 7,
+    safety_stock_days INTEGER DEFAULT 3,
+    min_order_quantity DECIMAL(12,4) DEFAULT 1,
+    order_multiple DECIMAL(12,4) DEFAULT 1, -- Round up to nearest multiple
+    priority ENUM('low', 'medium', 'high', 'critical') DEFAULT 'medium',
+    seasonal_adjustment BOOLEAN DEFAULT FALSE,
+    is_active BOOLEAN DEFAULT TRUE,
+    last_triggered_at TIMESTAMP NULL,
+    next_check_at TIMESTAMP NULL,
+    auto_approve BOOLEAN DEFAULT FALSE,
+    approval_threshold DECIMAL(15,2), -- Auto-approve if under this amount
+    created_by BIGINT UNSIGNED NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    
+    FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE,
+    FOREIGN KEY (location_id) REFERENCES locations(id) ON DELETE CASCADE,
+    FOREIGN KEY (supplier_id) REFERENCES suppliers(id) ON DELETE CASCADE,
+    FOREIGN KEY (created_by) REFERENCES users(id) ON DELETE RESTRICT,
+    UNIQUE KEY uk_reorder_rule (product_id, location_id),
+    INDEX idx_reorder_active (is_active),
+    INDEX idx_reorder_next_check (next_check_at),
+    INDEX idx_reorder_priority (priority)
+);
+```
+
+#### `stock_aging_snapshots`
+```sql
+CREATE TABLE stock_aging_snapshots (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    snapshot_date DATE NOT NULL,
+    product_id BIGINT UNSIGNED NOT NULL,
+    batch_id BIGINT UNSIGNED NOT NULL,
+    location_id BIGINT UNSIGNED,
+    quantity_on_date DECIMAL(12,4) NOT NULL,
+    days_in_stock INTEGER NOT NULL,
+    aging_category ENUM('0-30', '31-60', '61-90', '91-180', '180+', 'expired') NOT NULL,
+    unit_cost DECIMAL(15,4) NOT NULL,
+    total_value DECIMAL(15,2) NOT NULL,
+    market_value DECIMAL(15,2), -- Current market value
+    depreciation_rate DECIMAL(5,2), -- Monthly depreciation %
+    recommended_action ENUM('none', 'promote', 'discount', 'liquidate', 'dispose') DEFAULT 'none',
+    
+    FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE,
+    FOREIGN KEY (batch_id) REFERENCES product_batches(id) ON DELETE CASCADE,
+    FOREIGN KEY (location_id) REFERENCES locations(id) ON DELETE CASCADE,
+    INDEX idx_aging_snapshot_date (snapshot_date),
+    INDEX idx_aging_category (aging_category),
+    INDEX idx_aging_action (recommended_action),
+    INDEX idx_aging_product_date (product_id, snapshot_date)
+);
+```
+
+### 📊 **11. Business Intelligence System (Sprint 9-10)**
+
+#### `business_kpis`
+```sql
+CREATE TABLE business_kpis (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    kpi_name VARCHAR(100) NOT NULL,
+    kpi_category ENUM('sales', 'inventory', 'customer', 'financial', 'operational', 'quality', 'efficiency') NOT NULL,
+    measurement_date DATE NOT NULL,
+    measurement_period ENUM('daily', 'weekly', 'monthly', 'quarterly', 'yearly') NOT NULL,
+    current_value DECIMAL(15,4) NOT NULL,
+    target_value DECIMAL(15,4),
+    previous_period_value DECIMAL(15,4),
+    variance_percentage DECIMAL(8,4),
+    variance_amount DECIMAL(15,4),
+    benchmark_value DECIMAL(15,4), -- Industry benchmark
+    location_id BIGINT UNSIGNED,
+    department VARCHAR(100),
+    metadata JSON, -- Additional context data
+    alert_threshold_min DECIMAL(15,4),
+    alert_threshold_max DECIMAL(15,4),
+    is_alert_triggered BOOLEAN DEFAULT FALSE,
+    calculated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    
+    FOREIGN KEY (location_id) REFERENCES locations(id) ON DELETE CASCADE,
+    INDEX idx_kpi_category_date (kpi_category, measurement_date),
+    INDEX idx_kpi_name_date (kpi_name, measurement_date),
+    INDEX idx_kpi_alert (is_alert_triggered),
+    INDEX idx_kpi_location_date (location_id, measurement_date)
+);
+```
+
+#### `sales_analytics_daily`
+```sql
+CREATE TABLE sales_analytics_daily (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    analysis_date DATE NOT NULL,
+    location_id BIGINT UNSIGNED,
+    category_id BIGINT UNSIGNED,
+    total_transactions INTEGER DEFAULT 0,
+    total_items_sold INTEGER DEFAULT 0,
+    total_revenue DECIMAL(15,2) DEFAULT 0,
+    total_cost DECIMAL(15,2) DEFAULT 0,
+    gross_profit DECIMAL(15,2) DEFAULT 0,
+    gross_margin_percentage DECIMAL(5,2) DEFAULT 0,
+    avg_transaction_value DECIMAL(15,2) DEFAULT 0,
+    avg_items_per_transaction DECIMAL(8,2) DEFAULT 0,
+    unique_customers INTEGER DEFAULT 0,
+    returning_customers INTEGER DEFAULT 0,
+    new_customers INTEGER DEFAULT 0,
+    top_selling_product_id BIGINT UNSIGNED,
+    peak_hour INTEGER, -- 0-23
+    weather_condition VARCHAR(50),
+    weather_impact_factor DECIMAL(5,2) DEFAULT 1.00,
+    promotional_impact DECIMAL(15,2) DEFAULT 0,
+    discount_amount DECIMAL(15,2) DEFAULT 0,
+    refund_amount DECIMAL(15,2) DEFAULT 0,
+    payment_method_breakdown JSON, -- Cash, card, etc. breakdown
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    
+    FOREIGN KEY (location_id) REFERENCES locations(id) ON DELETE CASCADE,
+    FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE CASCADE,
+    FOREIGN KEY (top_selling_product_id) REFERENCES products(id) ON DELETE SET NULL,
+    UNIQUE KEY uk_daily_analytics (analysis_date, location_id, category_id),
+    INDEX idx_analytics_date (analysis_date),
+    INDEX idx_analytics_location (location_id),
+    INDEX idx_analytics_margin (gross_margin_percentage)
+);
+```
+
+#### `customer_behavior_patterns`
+```sql
+CREATE TABLE customer_behavior_patterns (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    customer_id BIGINT UNSIGNED NOT NULL,
+    behavior_type ENUM('purchase_frequency', 'seasonal_patterns', 'price_sensitivity', 'brand_loyalty', 'category_preference', 'time_patterns', 'channel_preference') NOT NULL,
+    pattern_data JSON, -- Store behavior metrics as JSON
+    confidence_level DECIMAL(5,2),
+    sample_size INTEGER, -- Number of transactions analyzed
+    analysis_period_start DATE,
+    analysis_period_end DATE,
+    predicted_next_purchase DATE,
+    predicted_spend_amount DECIMAL(15,2),
+    churn_risk_score DECIMAL(5,2), -- 0-100%
+    lifetime_value DECIMAL(15,2),
+    segmentation_tags JSON, -- Customer segment tags
+    last_updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    
+    FOREIGN KEY (customer_id) REFERENCES customers(id) ON DELETE CASCADE,
+    UNIQUE KEY uk_customer_behavior (customer_id, behavior_type),
+    INDEX idx_behavior_type (behavior_type),
+    INDEX idx_behavior_churn (churn_risk_score),
+    INDEX idx_behavior_lifetime_value (lifetime_value)
+);
+```
+
+---
+
+*Enhanced Database Schema Version: 3.0*  
 *Last Updated: August 3, 2025*  
-*Compatible with: MySQL 8.0+, PostgreSQL 13+*  
-*FIFO Implementation: Complete*  
-*Estimated Implementation Time: 6 Sprints (14 weeks)*
+*MVP Tables: 25+ | Advanced Features Tables: 15+*  
+*Total Estimated Tables: 40+*  
+*Expected Performance: < 100ms for FIFO operations, < 200ms for analytics queries*  
+*Full Implementation Timeline: 14 Sprints (28 weeks)*
+
+---
+
+## 🎯 **Implementation Phases Summary**
+
+### **MVP Phase (Sprint 1-6): Core Business Operations**
+- Foundation tables for POS operations
+- FIFO inventory management
+- Basic supplier management
+- Core sales and purchase functions
+- Essential reporting
+
+### **Growth Phase (Sprint 7-8): Customer Excellence**
+- Advanced customer loyalty programs
+- Sophisticated promotion management
+- Customer tier system
+- Referral programs
+
+### **Intelligence Phase (Sprint 9-10): Smart Operations**
+- Predictive inventory management
+- Supplier performance analytics
+- Advanced business intelligence
+- Customer behavior analysis
+
+### **Enterprise Phase (Sprint 11-14): Advanced Integration**
+- Financial system integration
+- E-commerce platform connectivity
+- IoT device integration
+- Machine learning capabilities
