@@ -1,0 +1,10 @@
+node_modules
+npm-debug.log
+dist
+.env
+.git
+.gitignore
+Dockerfile
+
+# Jangan exclude file/folder project utama Quasar
+# Pastikan src, quasar.config.js, public, package.json, dll tetap di-copy

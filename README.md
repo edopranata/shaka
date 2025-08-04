@@ -1,3 +1,5 @@
+
+---
 # 🚀 Shaka POS - Point of Sales Application
 
 <div align="center">
@@ -187,7 +189,60 @@ SPA_URL=http://localhost:9000
 VITE_API_URL=http://localhost:8000/api
 VITE_APP_NAME="Shaka POS"
 ```
+---
+# SimplePOS - Laravel & Quasar Dockerized
 
+## 🚀 Quick Start
+
+### 1. Build & Run All Services
+```bash
+docker compose up --build -d
+```
+
+### 2. Check Container Status
+```bash
+docker compose ps
+```
+
+### 3. Run Laravel Migrations & Seeders
+```bash
+docker compose exec backend php artisan migrate --seed
+```
+
+### 4. Restart Backend After .env Change
+```bash
+docker compose restart backend
+```
+
+## 🛠️ Troubleshooting
+- Pastikan port MySQL di host tidak conflict (default: 3308)
+- Untuk koneksi antar container, gunakan DB_HOST=mysql dan DB_PORT=3306 di .env
+- Cek log container jika ada error:
+  ```bash
+  docker compose logs backend
+  docker compose logs mysql
+  docker compose logs frontend
+  ```
+
+## 🌐 Accessing Services
+- Backend API: http://localhost:8000
+- Frontend: http://localhost:9000
+- phpMyAdmin: http://localhost:8080
+
+## 📦 Project Structure
+- backend/: Laravel API
+- frontend/: Vue + Quasar
+- database/: Migration & seeder scripts
+- docker/: Dockerfile & config
+- docs/: Documentation
+- docker-compose.yml: Service orchestration
+
+## 📄 Documentation & Roadmap
+- [project_progress_plan.md](./project_progress_plan.md)
+- [CHANGELOG.md](./CHANGELOG.md)
+- [DATABASE_SCHEMA.md](./DATABASE_SCHEMA.md)
+
+---
 ## 🤝 Contributing
 
 1. Fork the repository

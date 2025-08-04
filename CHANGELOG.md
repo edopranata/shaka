@@ -1,9 +1,29 @@
+# [Unreleased]
+
+## [0.2.0-sprint2] - 2025-08-04
+
+### Added
+- Docker Compose setup for backend, frontend, MySQL, Redis, phpMyAdmin
+- .dockerignore for backend & frontend
+- Yarn support for frontend build
+
+### Changed
+- MySQL port mapping to 3308 (host) to avoid conflict
+- Backend .env: DB_HOST and REDIS_HOST now use Docker service names
+- Backend .env: DB_PORT set to 3306 for internal Docker networking
+
+### Fixed
+- Error connecting backend to MySQL and Redis in Docker
+- Permission and storage folder creation in backend Dockerfile
+
+---
 # Changelog
 
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
 
 ## [Unreleased]
 
